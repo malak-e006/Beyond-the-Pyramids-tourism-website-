@@ -7,7 +7,6 @@ const { validateReview } = require('../middleware/validate');
 const { uploadReviewPhotos } = require('../middleware/upload');
 
 router.post('/', protect, validateReview, reviewController.createReview);
-router.post('/:id/photos', protect, uploadReviewPhotos, reviewController.uploadReviewPhotos);
 router.get('/package/:packageId', reviewController.getPackageReviews);
 router.get('/', protect, authorize('Admin'), reviewController.getAllReviews);
 router.put('/:id', protect, reviewController.updateReview);

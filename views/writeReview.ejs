@@ -182,6 +182,14 @@
                         </button>
                     </div>
                 </div>
+
+                <section class="review-panel reveal-up" style="margin-top:2rem;">
+                    <div class="section-header">
+                        <span class="step-label">Your History</span>
+                        <h2>My Reviews</h2>
+                    </div>
+                    <div id="my-reviews-list"><p style="color:var(--color-text-muted);padding:1rem 0;">Loading your reviews…</p></div>
+                </section>
             </div>
         </main>
     </div>
@@ -195,15 +203,12 @@
         </div>
     </div>
 
+    <script id="server-data" type="application/json"><%- JSON.stringify({ user, packages }) %></script>
     <script>
-        const SERVER_DATA = {
-            user: <%- JSON.stringify(user) %>,
-            packages: <%- JSON.stringify(packages) %>
-        };
+        const SERVER_DATA = JSON.parse(document.getElementById('server-data').textContent);
         window.SERVER_USER = SERVER_DATA.user;
         window.SERVER_PACKAGES = SERVER_DATA.packages;
-
-</script>
+    </script>
     <script src="/js/global.js"></script>
     <script src="/js/writeReview.js"></script>
 </body>

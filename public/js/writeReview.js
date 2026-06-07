@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setupFormSubmission();
 
     initAnimations();
+    loadMyReviews();
 });
 
 function displayUserName() {
@@ -116,6 +117,7 @@ function setupStarRating() {
 }
 
 let selectedFiles = [];
+let editingReviewId = null;
 
 function setupPhotoUpload() {
     const uploadArea = document.getElementById('upload-area');
@@ -215,6 +217,22 @@ function setupFormSubmission() {
             if (!reviewTitle) { showFeedback('Please enter a review title.'); submitBtn.disabled = false; submitBtn.textContent = 'Submit Review'; return; }
 
             try {
+                if (editingReviewId) {
+                    const res = await fetch('/api/reviews/' + editingReviewId, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ rating, title: reviewTitle, text: reviewText }),
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.message || 'Update failed');
+                    editingReviewId = null;
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Review';
+                    showFeedback('Review updated.', 'success');
+                    loadMyReviews();
+                    return;
+                }
+
                 const res = await fetch('/api/reviews', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -255,6 +273,8 @@ function setupFormSubmission() {
 function closeModal() {
     window.location.href = '/dashboard';
 }
+
+
 
 function initAnimations() {
     const observer = new IntersectionObserver((entries) => {

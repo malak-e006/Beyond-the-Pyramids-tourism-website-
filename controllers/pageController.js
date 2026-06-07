@@ -342,6 +342,7 @@ const getAdminReportsPage = async (req, res, next) => {
         createdAt: b.createdAt ? b.createdAt.toISOString().split('T')[0] : '',
       })),
       allReviews: allReviews.map(r => ({
+        id: String(r._id),
         user: r.userId ? r.userId.name : 'Verified Traveler',
         rating: r.rating || 5,
         review: r.text || r.title || '',

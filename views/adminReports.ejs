@@ -335,11 +335,12 @@
         document.getElementById('reviewsList').innerHTML = filtered.length === 0
             ? '<div style="color:var(--color-text-muted);padding:20px;">No reviews in range.</div>'
             : filtered.map(r => `
-                <div class="review-item">
+                <div class="review-item" id="admin-review-${r.id}">
                     <div class="review-header">
                         <strong>${r.user}</strong>
                         <span style="color:#F1C40F;">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
                         <span class="review-date">${r.date}</span>
+                        <button onclick="deleteAdminReview('${r.id}')" style="margin-left:auto;background:none;border:none;color:#dc3545;cursor:pointer;font-size:0.8rem;"><i class="fas fa-trash"></i> Delete</button>
                     </div>
                     <p class="review-text">"${r.review}"</p>
                     ${r.photos && r.photos.length ? `
@@ -362,6 +363,7 @@
         });
     }
 
+    // ── Init ─────────────────────────────────────────────────────────────────
     function setDefaultDates() {
         const today = new Date();
         const sixAgo = new Date(); sixAgo.setMonth(sixAgo.getMonth() - 6);
